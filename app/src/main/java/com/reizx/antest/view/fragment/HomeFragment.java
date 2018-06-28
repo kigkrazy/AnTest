@@ -1,13 +1,20 @@
 package com.reizx.antest.view.fragment;
 
+import android.provider.Settings;
 import android.widget.EditText;
-import android.widget.TextView;
 
+import com.blankj.utilcode.util.FileUtils;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.reizx.antest.R;
 import com.reizx.antest.contract.HomeConstract;
 import com.reizx.antest.presenter.HomePresenter;
+import com.reizx.antest.util.AsfMgrLog;
 import com.reizx.antest.view.common.BaseFragment;
+import com.ta.utdid2.device.UTDevice;
+
+import org.joor.Reflect;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -17,16 +24,18 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     QMUITopBar mTopBar;
 
     @BindView(R.id.et_app_show_log)
-    EditText et;
+    EditText etLog;
 
     @OnClick(R.id.btn_app_genutdid)
     public void startZkService(){
-
+        cleanUtdid();
+        String utdid = UTDevice.getUtdid(app);
+        etLog.append(utdid + "\n");
     }
 
-    @OnClick(R.id.btn_app_stop_service)
+    @OnClick(R.id.btn_app_clean_sharedpreferences)
     public void stopZkService(){
-        presenter.stopZkService(baseActivity);
+        cleanSharedPreferences();
     }
 
     @OnClick(R.id.btn_app_request_ip)
@@ -81,6 +90,21 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
     @Override
     public void setCurrentIp(String ip) {
-        et.setText(ip);
+        etLog.setText(ip);
+    }
+
+    public void cleanUtdid(){
+        //反射清空数据
+        Reflect.on("com.ta.utdid2.device.b" , app.getClassLoader()).set("a", null);
+        Settings.System.putString(app.getContentResolver(), "dxCRMxhQkdGePGnp", "");
+        Settings.System.putString(app.getContentResolver(), "mqBRboGZkQPcAkyk", "");
+        FileUtils.deleteDir(new File("/sdcard/.UTSystemConfig"));
+        FileUtils.deleteDir(new File("/sdcard/.DataStorage"));
+        cleanSharedPreferences();
+    }
+
+    public void cleanSharedPreferences(){
+        boolean rel = FileUtils.deleteAllInDir("/data/data/" + app.getPackageName() + "/shared_prefs");
+        AsfMgrLog.d("clean SharedPreferences result : " + rel);
     }
 }
