@@ -17,13 +17,23 @@
             android:layout_width="match_parent"
             android:orientation="vertical">
             <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-                android:id="@+id/btn_app_genutdid"
+                android:id="@+id/btn_app_genutdid_lib"
                 style="@style/NormalRoundButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginHorizontal="15dp"
-                android:text="生成UTDID"/>
+                android:text="生成UTDID-lib"/>
+
+            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                android:id="@+id/btn_app_genutdid_util"
+                style="@style/NormalRoundButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="15dp"
+                android:text="生成UTDID-util"/>
+
 
             <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
                 android:id="@+id/btn_app_clean_sharedpreferences"

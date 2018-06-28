@@ -1,11 +1,13 @@
 package com.reizx.antest.view.fragment;
 
 import android.provider.Settings;
+import android.util.Base64;
 import android.widget.EditText;
 
 import com.blankj.utilcode.util.FileUtils;
 import com.qmuiteam.qmui.widget.QMUITopBar;
 import com.reizx.antest.R;
+import com.reizx.antest.component.wdj.WdjUtil;
 import com.reizx.antest.contract.HomeConstract;
 import com.reizx.antest.presenter.HomePresenter;
 import com.reizx.antest.util.AsfMgrLog;
@@ -15,6 +17,9 @@ import com.ta.utdid2.device.UTDevice;
 import org.joor.Reflect;
 
 import java.io.File;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -26,12 +31,28 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     @BindView(R.id.et_app_show_log)
     EditText etLog;
 
-    @OnClick(R.id.btn_app_genutdid)
-    public void startZkService(){
+    @OnClick(R.id.btn_app_genutdid_lib)
+    public void startGenUtdidLib(){
         cleanUtdid();
         String utdid = UTDevice.getUtdid(app);
         etLog.append(utdid + "\n");
     }
+
+    @OnClick(R.id.btn_app_genutdid_util)
+    public void startGenUtdidUtil(){
+        String imei = "123456789012345";
+        try {
+            String utdid = Base64.encodeToString(WdjUtil._generateUtdid(imei), 2);
+            etLog.append(utdid + "\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (InvalidKeyException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @OnClick(R.id.btn_app_clean_sharedpreferences)
     public void stopZkService(){
