@@ -54,4 +54,6 @@ dependencies {
 
     //一个运行时HOOK的库
     api 'me.weishu:epic:0.3.6'
+
+    api 'com.zhy:okhttputils:2.6.2'
 }
